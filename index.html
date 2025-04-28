@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XV Años | Valentina</title>
+    <title>XV Años | Aidy Milián</title>
     <style>
         :root {
             --rosa-claro: #f8d7e8;
@@ -633,12 +633,12 @@
             <div class="flores-superiores"></div>
             <div class="header-content">
                 <div class="tagline fade-in">Una Celebración Especial</div>
-                <h1 class="fade-in delay-1">XV Años</h1>
+                <h1 class="fade-in delay-1">XV Años Aidy Milián</h1>
                 <div class="tiara-container fade-in delay-2">
                     <div class="tiara">👑</div>
                 </div>
                 <div class="fecha-container fade-in delay-3">
-                    <p class="fecha">28 DE JULIO 2025 | 5:00 PM</p>
+                    <p class="fecha">14 DE JUNIO 2025 | 4:00 PM</p>
                 </div>
             </div>
         </header>
@@ -674,12 +674,12 @@
             <h2>Ubicación</h2>
             <div class="info-item">
                 <i class="fas fa-map-marker-alt info-icon"></i>
-                <p>Salón de Eventos "Jardín Real", Av. de las Rosas 1500, Ciudad Elegante</p>
+                <p>Salón de Eventos "Jardin La Asuncion" San Lucas Sacatepéquez</p>
             </div>
             <div class="mapa-container">
-                <iframe class="mapa" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.888244552543!2d-99.1776906845336!3d19.42602024592232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff35f5bd1563%3A0x6c366f0e2de02ff7!2sEl%20%C3%81ngel%20de%20la%20Independencia!5e0!3m2!1ses!2smx!4v1620000000000!5m2!1ses!2smx" allowfullscreen="" loading="lazy"></iframe>
+                <iframe class="mapa" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4650.030389464121!2d-90.66242422420251!3d14.611491576808529!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85890b757ae81385%3A0x7bfc6b95f07e4b3!2sJardin%20Para%20Eventos%20La%20Asuncion!5e1!3m2!1ses-419!2sgt!4v1745872672110!5m2!1ses-419!2sgt" allowfullscreen="" loading="lazy"></iframe>
             </div>
-            <button class="direccion-btn">OBTENER DIRECCIÓN</button>
+            <button class="direccion-btn" onclick="window.location.href='https://ul.waze.com/ul?place=ChIJhRPoenULiYURs-QHX7nGvwc&ll=14.61148640%2C-90.65984930&navigate=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location';">OBTENER DIRECCIÓN</button>
         </section>
 
         <section class="confirmar fade-in delay-3">
@@ -738,7 +738,7 @@
 
         // Cuenta regresiva
         function updateCountdown() {
-            const targetDate = new Date('July 28, 2025 17:00:00').getTime();
+            const targetDate = new Date('Juny 14, 2025 16:00:00').getTime();
             const now = new Date().getTime();
             const distance = targetDate - now;
             
@@ -813,7 +813,7 @@
 
         // Botón de dirección
         document.querySelector('.direccion-btn').addEventListener('click', function() {
-            alert('Dirección copiada al portapapeles: Salón de Eventos "Jardín Real", Av. de las Rosas 1500, Ciudad Elegante');
+            window.location.href = 'https://ul.waze.com/ul?place=ChIJhRPoenULiYURs-QHX7nGvwc&ll=14.61148640%2C-90.65984930&navigate=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location';
         });
 
         // Inicializar
