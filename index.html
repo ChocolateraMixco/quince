@@ -10,8 +10,12 @@
             --rosa-medio: #f4a6d7;
             --rosa-oscuro: #e67fb5;
             --dorado: #d4af37;
+            --dorado-oscuro: #b38f2e;
             --blanco: #fff9fb;
             --negro: #2a0a1a;
+            --papel-oscuro: #f5f0e8;
+            --papel-claro: #faf7f2;
+            --pergamino: #f3e9d9;
         }
         
         * {
@@ -22,16 +26,36 @@
         }
         
         body {
-            background-color: var(--blanco);
             color: var(--negro);
             line-height: 1.8;
             overflow-x: hidden;
+            /* Fondo de papel arrugado mejorado */
+            background-image: url('https://www.transparenttextures.com/patterns/old-map.png'), 
+                              url('https://www.transparenttextures.com/patterns/cream-paper.png');
+            background-color: var(--papel-claro);
+            background-attachment: fixed;
+            background-blend-mode: multiply;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
             overflow: hidden;
+            position: relative;
+        }
+        
+        /* Efecto de borde de página arrugada mejorado */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/vintage-speckles.png');
+            opacity: 0.08;
+            pointer-events: none;
+            z-index: -1;
         }
         
         /* Header elegante */
@@ -46,6 +70,7 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
         }
         
         .flores-superiores {
@@ -169,11 +194,89 @@
             text-align: center;
             position: relative;
             margin: 40px 0;
-            background-color: var(--blanco);
+            background-color: rgba(255, 255, 255, 0.85); /* Fondo semi-transparente */
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
             border-radius: 15px;
-            border: 1px solid var(--rosa-claro);
+            border: 1px solid rgba(230, 127, 181, 0.2);
             overflow: hidden;
+            backdrop-filter: blur(2px);
+            border-top: 1px solid rgba(255,255,255,0.8);
+            border-left: 1px solid rgba(255,255,255,0.8);
+        }
+        
+        /* Efecto de sello mejorado */
+        .sello-elegante {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, var(--dorado) 40%, transparent 70%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.3), 
+                        inset 0 0 20px rgba(212, 175, 55, 0.5),
+                        0 0 30px rgba(212, 175, 55, 0.3);
+            z-index: 10;
+            animation: brillo-sello 3s infinite alternate;
+            border: 3px double rgba(180, 150, 50, 0.8);
+            background-image: radial-gradient(circle at center, 
+                            var(--dorado) 0%, 
+                            var(--dorado-oscuro) 30%, 
+                            transparent 70%);
+        }
+
+        .sello-elegante::before {
+            content: 'XV';
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: var(--rosa-oscuro);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+            margin-top: -10px;
+            background: linear-gradient(to bottom, #e67fb5, #d45f9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3));
+        }
+
+        .sello-elegante::after {
+            content: 'Aidy Lineth';
+            position: absolute;
+            bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            color: var(--rosa-oscuro);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+        }
+
+        /* Efecto de relieve en el sello */
+        .sello-elegante::before,
+        .sello-elegante::after {
+            position: relative;
+            z-index: 2;
+        }
+
+        .sello-elegante::before {
+            z-index: 3;
+        }
+
+        @keyframes brillo-sello {
+            0% { 
+                opacity: 0.95; 
+                transform: translateX(-50%) scale(1); 
+                box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateX(-50%) scale(1.05) rotate(2deg); 
+                box-shadow: 0 0 25px rgba(212, 175, 55, 0.8);
+            }
         }
         
         section h2 {
@@ -196,16 +299,32 @@
             background: linear-gradient(to right, transparent, var(--dorado), transparent);
         }
         
-        /* Sección de mensaje */
+        /* Sección de mensaje mejorada con efecto pergamino antiguo */
         .oracion {
             max-width: 800px;
             margin: 60px auto;
             padding: 50px;
-            border-radius: 20px;
+            border-radius: 5px;
             position: relative;
-            background-color: var(--blanco);
-            border: 1px solid var(--rosa-claro);
-            box-shadow: 0 10px 30px rgba(230, 127, 181, 0.1);
+            background-color: var(--pergamino);
+            border: 1px solid #e0d0b8;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1),
+                        inset 0 0 50px rgba(0,0,0,0.05),
+                        0 0 100px rgba(230, 127, 181, 0.1);
+            background-image: 
+                linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 20%, transparent 80%, rgba(255,255,255,0.3) 100%),
+                url('https://www.transparenttextures.com/patterns/rice-paper.png');
+            transform: perspective(1000px) rotateX(2deg);
+            transition: all 0.5s ease;
+            border-top: 1px solid rgba(255,255,255,0.5);
+            border-left: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .oracion:hover {
+            transform: perspective(1000px) rotateX(1deg) scale(1.01);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15),
+                        inset 0 0 60px rgba(0,0,0,0.08),
+                        0 0 120px rgba(230, 127, 181, 0.15);
         }
         
         .oracion p {
@@ -214,8 +333,33 @@
             font-style: italic;
             position: relative;
             z-index: 1;
+            color: #555;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.8);
         }
         
+        /* Efectos de bordes desgastados para el pergamino */
+        .oracion::before,
+        .oracion::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            width: 50px;
+            background: linear-gradient(to right, transparent, rgba(0,0,0,0.03));
+            z-index: 0;
+        }
+
+        .oracion::before {
+            left: 0;
+            transform: skewY(2deg);
+        }
+
+        .oracion::after {
+            right: 0;
+            transform: skewY(-2deg);
+            background: linear-gradient(to left, transparent, rgba(0,0,0,0.03));
+        }
+
         /* Cuenta regresiva */
         .countdown-section {
             max-width: 800px;
@@ -424,13 +568,14 @@
             box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
         }
         
-        /* Footer */
+        /* Footer mejorado */
         footer {
-            padding: 60px 20px;
+            padding: 80px 20px 60px;
             text-align: center;
             background: linear-gradient(to top, var(--rosa-claro), var(--blanco));
             position: relative;
             margin-top: 60px;
+            border-top: 1px solid rgba(230, 127, 181, 0.3);
         }
         
         .footer-content {
@@ -539,6 +684,75 @@
             100% { transform: rotate(360deg); }
         }
         
+        /* Efecto de celebración especial */
+        .celebracion-especial {
+            position: relative;
+            padding: 80px 40px;
+            text-align: center;
+            margin: 80px 0;
+            background: linear-gradient(135deg, rgba(248, 215, 232, 0.8), rgba(244, 166, 215, 0.8));
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(230, 127, 181, 0.2),
+                        inset 0 0 30px rgba(255, 255, 255, 0.4);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .celebracion-especial::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/roses.png');
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .celebracion-especial h2 {
+            position: relative;
+            z-index: 1;
+            font-family: 'Great Vibes', cursive;
+            font-size: 3.5rem;
+            color: var(--rosa-oscuro);
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        .celebracion-especial p {
+            position: relative;
+            z-index: 1;
+            font-size: 1.2rem;
+            color: var(--negro);
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        .confeti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: var(--rosa-claro);
+            opacity: 0.7;
+            animation: caida-confeti 5s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes caida-confeti {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(600px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             h1 {
@@ -556,6 +770,14 @@
             
             .countdown-number {
                 font-size: 1.8rem;
+            }
+
+            .oracion {
+                padding: 30px 20px;
+            }
+
+            .celebracion-especial h2 {
+                font-size: 2.8rem;
             }
         }
         
@@ -612,7 +834,19 @@
             }
             
             .oracion {
-                padding: 30px 20px;
+                padding: 25px 15px;
+            }
+
+            .celebracion-especial {
+                padding: 50px 20px;
+            }
+
+            .celebracion-especial h2 {
+                font-size: 2.2rem;
+            }
+
+            .celebracion-especial p {
+                font-size: 1rem;
             }
         }
     </style>
@@ -643,9 +877,34 @@
             </div>
         </header>
 
+        <!-- Sección de celebración especial mejorada -->
+        <section class="celebracion-especial fade-in">
+            <h2>Una Celebración Inolvidable</h2>
+            
+            <!-- Efecto de confeti -->
+            <div class="confeti" style="left: 10%; animation-delay: 0s;"></div>
+            <div class="confeti" style="left: 20%; animation-delay: 1s; background-color: var(--dorado);"></div>
+            <div class="confeti" style="left: 30%; animation-delay: 2s;"></div>
+            <div class="confeti" style="left: 40%; animation-delay: 0.5s; background-color: var(--blanco);"></div>
+            <div class="confeti" style="left: 50%; animation-delay: 1.5s;"></div>
+            <div class="confeti" style="left: 60%; animation-delay: 0.8s; background-color: var(--dorado);"></div>
+            <div class="confeti" style="left: 70%; animation-delay: 2.5s;"></div>
+            <div class="confeti" style="left: 80%; animation-delay: 1.2s; background-color: var(--blanco);"></div>
+            <div class="confeti" style="left: 90%; animation-delay: 0.3s;"></div>
+        </section>
+
         <section class="oracion fade-in">
-            <h2>Mi Mensaje</h2>
-            <p>En este día tan especial, quiero compartir contigo la alegría de celebrar mis quince años. Con la bendición de Dios y el amor de mi familia, inicio esta nueva etapa llena de sueños y esperanzas. Tu presencia hará que este momento sea aún más memorable. Gracias por ser parte de mi vida y acompañarme en esta celebración que marcará el comienzo de mi camino como joven mujer.</p>
+            <h2>Con el Corazón Lleno de Gratitud</h2>
+            <p>Querido Dios, en este día de inmensa alegría, elevo mi voz para darte gracias por permitirme llegar a este momento tan especial en mi vida. Con profunda emoción y corazón agradecido, celebro mis quince años rodeada del amor de mi familia y amigos que han sido luz en mi camino.</p>
+        
+            <p>Te doy gracias por cada sonrisa, por cada enseñanza, por la salud que me sostiene y por la bendición de tener a mis padres, hermanos y seres queridos a mi lado. Hoy, Aidy Lineth Millán Tello inicia una nueva etapa como joven mujer, llevando en mi corazón los valores que me han inculcado.</p>
+        
+            <p>Con humildad te pido, Señor, que bendigas esta celebración donde quiero compartir mi felicidad con quienes han sido parte importante de mi historia. Que esta noche esté llena de amor, alegría y hermosos recuerdos que atesoraremos para siempre.</p>
+        
+            <p>Familiares y amigos, los invito con todo cariño a acompañarme en esta fiesta donde celebraremos no solo mis quince años, sino también el regalo de estar unidos. Su presencia será el mejor regalo que pueda recibir en este día tan significativo.</p>
+        
+            <p>Con amor y gratitud,<br>
+            <span style="font-family: 'Great Vibes', cursive; font-size: 3.0rem; color: var(--dorado);">Aidy Lineth Millán Tello</span></p>
         </section>
 
         <section class="countdown-section fade-in delay-1">
@@ -715,6 +974,7 @@
         </section>
 
         <footer class="fade-in delay-4">
+            <div class="sello-elegante"></div>
             <div class="footer-floral"></div>
             <div class="footer-content">
                 <h3>¡Espero verte en mi fiesta!</h3>
@@ -723,7 +983,7 @@
                     <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" class="social-icon"><i class="fab fa-whatsapp"></i></a>
                 </div>
-                <p class="copyright">© 2025 XV Años Valentina. Todos los derechos reservados.</p>
+                <p class="copyright">© 2025 XV Años Aidy. Todos los derechos reservados.</p>
             </div>
         </footer>
     </div>
@@ -738,7 +998,7 @@
 
         // Cuenta regresiva
         function updateCountdown() {
-            const targetDate = new Date('Juny 14, 2025 16:00:00').getTime();
+            const targetDate = new Date('June 14, 2025 16:00:00').getTime();
             const now = new Date().getTime();
             const distance = targetDate - now;
             
@@ -816,10 +1076,27 @@
             window.location.href = 'https://ul.waze.com/ul?place=ChIJhRPoenULiYURs-QHX7nGvwc&ll=14.61148640%2C-90.65984930&navigate=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location';
         });
 
+        // Crear más confeti
+        function crearConfeti() {
+            const celebracion = document.querySelector('.celebracion-especial');
+            for (let i = 0; i < 20; i++) {
+                const confeti = document.createElement('div');
+                confeti.className = 'confeti';
+                confeti.style.left = Math.random() * 100 + '%';
+                confeti.style.animationDelay = Math.random() * 3 + 's';
+                confeti.style.backgroundColor = `hsl(${Math.random() * 60 + 300}, 70%, 70%)`;
+                confeti.style.width = Math.random() * 10 + 10 + 'px';
+                confeti.style.height = Math.random() * 10 + 10 + 'px';
+                confeti.style.animationDuration = Math.random() * 3 + 3 + 's';
+                celebracion.appendChild(confeti);
+            }
+        }
+
         // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
             updateCountdown();
             setInterval(updateCountdown, 1000);
+            crearConfeti();
         });
     </script>
 </body>
