@@ -154,21 +154,24 @@
         
         /* Sección del contador */
         .countdown-section {
-        padding: 40px 20px;
-        text-align: center;
-        background-color: var(--rosa-claro); /* Esto se mostrará si la imagen no carga */
-        background-image: url('15 años 1.jpg'); /* Cambia la URL por la de tu imagen */
-        background-size: cover; /* o 'contain' dependiendo del efecto que quieras */
-        background-position: center; /* centra la imagen */
-        background-repeat: no-repeat; /* evita que se repita la imagen */
-        position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 30px;
+            text-align: center;
+            background-color: var(--rosa-claro);
+            background-image: url('15 años 1.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
         }
         
         .countdown-section h2 {
-            color: var(--write-color);
+            color: var(--blanco);
             font-family: 'Great Vibes', cursive;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-size: 2rem;
+            margin-top: 20px; /* Espacio entre el contador y el texto */
+            order: 2; /* Asegura que el h2 venga después del contador */
         }
         
         .countdown {
@@ -177,6 +180,7 @@
             gap: 10px;
             margin: 0 auto;
             max-width: 350px;
+            order: 1; /* Asegura que el contador venga primero */
         }
         
         .countdown-item {
@@ -584,27 +588,29 @@
         </header>
 
         <!-- Sección del contador -->
-        <section class="countdown-section fade-in">
-            <h2>Faltan...</h2>
-            <div class="countdown" id="countdown">
-                <div class="countdown-item">
-                    <div class="countdown-number" id="days">00</div>
-                    <div class="countdown-label">Días</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="hours">00</div>
-                    <div class="countdown-label">Horas</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="minutes">00</div>
-                    <div class="countdown-label">Minutos</div>
-                </div>
-                <div class="countdown-item">
-                    <div class="countdown-number" id="seconds">00</div>
-                    <div class="countdown-label">Segundos</div>
-                </div>
+        <!-- Sección del contador (versión modificada) -->
+    <section class="countdown-section fade-in">
+        <div class="countdown-spacer"></div> <!-- Nuevo elemento para espacio superior -->
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Días</div>
             </div>
-        </section>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Horas</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutos</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Segundos</div>
+            </div>
+        </div>
+        <h2>Tiempo restante</h2> <!-- Texto movido debajo del contador -->
+    </section>
 
         <!-- Sección principal unificada -->
         <section class="seccion-principal fade-in delay-1">
