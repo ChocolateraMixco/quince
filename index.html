@@ -157,7 +157,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50px 30px;
+            padding: 80px 20px;
             text-align: center;
             background-color: var(--rosa-claro);
             background-image: url('15 años 1.jpg');
@@ -170,8 +170,8 @@
             color: var(--blanco);
             font-family: 'Great Vibes', cursive;
             font-size: 2rem;
-            margin-top: 20px; /* Espacio entre el contador y el texto */
-            order: 2; /* Asegura que el h2 venga después del contador */
+            margin-top: 20px;
+            order: 2;
         }
         
         .countdown {
@@ -180,7 +180,7 @@
             gap: 10px;
             margin: 0 auto;
             max-width: 350px;
-            order: 1; /* Asegura que el contador venga primero */
+            order: 1;
         }
         
         .countdown-item {
@@ -358,7 +358,7 @@
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         }
         
-        /* Formulario simplificado */
+        /* Formulario de confirmación */
         .confirmar {
             padding: 40px 20px;
             text-align: center;
@@ -373,8 +373,8 @@
         }
         
         .form-group {
-            position: relative;
-            margin: 20px 0;
+            margin-bottom: 20px;
+            text-align: left;
         }
         
         .family-select {
@@ -386,7 +386,6 @@
             color: var(--negro);
             font-family: 'Montserrat', sans-serif;
             font-size: 1rem;
-            margin-bottom: 10px;
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d4af37'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
@@ -394,11 +393,29 @@
             background-size: 20px;
         }
         
+        .confirmar input,
+        .confirmar textarea {
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            background: var(--blanco);
+            border: 1px solid var(--rosa-claro);
+            border-radius: 10px;
+            color: var(--negro);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .confirmar textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
         .guests-info {
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             color: var(--rosa-oscuro);
-            margin-bottom: 20px;
-            display: none;
+            margin-top: 5px;
+            text-align: center;
         }
         
         .submit-btn {
@@ -414,6 +431,7 @@
             cursor: pointer;
             margin: 20px 0;
             transition: all 0.3s ease;
+            width: 100%;
         }
         
         .submit-btn:hover {
@@ -421,6 +439,25 @@
             box-shadow: 0 5px 10px rgba(212, 175, 55, 0.3);
         }
         
+        #confirmationMessage {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        #confirmationMessage.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        #confirmationMessage.error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
         /* Footer */
         footer {
             padding: 40px 20px;
@@ -428,7 +465,7 @@
             background: linear-gradient(to top, var(--rosa-claro), var(--blanco));
             position: relative;
         }
-        
+
         .sello-elegante {
             position: absolute;
             top: -50px;
@@ -563,6 +600,12 @@
     </style>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        // Inicializa EmailJS con tu User ID público
+        emailjs.init('service_q7q71oq","template_lcj61mv'); // Reemplaza con tu User ID real
+    </script>
 </head>
 <body>
     <!-- Pantalla de carga -->
@@ -588,29 +631,27 @@
         </header>
 
         <!-- Sección del contador -->
-        <!-- Sección del contador (versión modificada) -->
-    <section class="countdown-section fade-in">
-        <div class="countdown-spacer"></div> <!-- Nuevo elemento para espacio superior -->
-        <div class="countdown" id="countdown">
-            <div class="countdown-item">
-                <div class="countdown-number" id="days">00</div>
-                <div class="countdown-label">Días</div>
+        <section class="countdown-section fade-in">
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">Días</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">Horas</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">Minutos</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">Segundos</div>
+                </div>
             </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="hours">00</div>
-                <div class="countdown-label">Horas</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="minutes">00</div>
-                <div class="countdown-label">Minutos</div>
-            </div>
-            <div class="countdown-item">
-                <div class="countdown-number" id="seconds">00</div>
-                <div class="countdown-label">Segundos</div>
-            </div>
-        </div>
-        <h2>Tiempo restante</h2> <!-- Texto movido debajo del contador -->
-    </section>
+            <h2>Faltan solo...</h2>
+        </section>
 
         <!-- Sección principal unificada -->
         <section class="seccion-principal fade-in delay-1">
@@ -658,22 +699,32 @@
             <h2>Confirmar Asistencia</h2>
             <form id="confirmacionForm">
                 <div class="form-group">
-                    <select class="family-select" id="familySelect" required>
+                    <input type="text" name="nombre" class="family-select" placeholder="Nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" class="family-select" placeholder="Correo electrónico (opcional)">
+                </div>
+                <div class="form-group">
+                    <select class="family-select" name="familia" id="familySelect" required>
                         <option value="" disabled selected>Selecciona tu familia</option>
-                        <option value="Paterna">Familia Paterna</option>
-                        <option value="Materna">Familia Materna</option>
-                        <option value="Amigos">Amigos</option>
-                        <option value="Padrinos">Padrinos</option>
-                        <option value="Escuela">Compañeros de escuela</option>
+                        <!-- Las opciones se llenarán con JavaScript -->
                     </select>
                 </div>
-                
-                <div class="guests-info" id="guestsInfo">
-                    Máximo <span id="maxGuests">0</span> invitados
+                <div class="form-group">
+                    <input type="number" name="asistentes" class="family-select" 
+                           placeholder="Número de asistentes" min="1" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="mensaje" class="family-select" 
+                             placeholder="Mensaje adicional (opcional)"></textarea>
                 </div>
                 
                 <button type="submit" class="submit-btn">CONFIRMAR ASISTENCIA</button>
             </form>
+            
+            <div id="confirmationMessage">
+                <i class="fas fa-check-circle"></i> <span id="messageText"></span>
+            </div>
         </section>
 
         <footer class="fade-in delay-4">
@@ -715,95 +766,163 @@
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
 
-        // Controlar el número de invitados según la familia seleccionada
-        document.getElementById('familySelect').addEventListener('change', function() {
-            const guestsInfo = document.getElementById('guestsInfo');
-            const maxGuests = document.getElementById('maxGuests');
-            
-            guestsInfo.style.display = 'block';
-            
-            switch(this.value) {
-                case 'Paterna':
-                case 'Materna':
-                    maxGuests.textContent = '5';
-                    break;
-                case 'Amigos':
-                    maxGuests.textContent = '2';
-                    break;
-                case 'Padrinos':
-                    maxGuests.textContent = '4';
-                    break;
-                case 'Escuela':
-                    maxGuests.textContent = '3';
-                    break;
+        // Datos completos de familias
+        const familyData = [
+            {name: "Milián Cordóva/abuelos", max: 2},
+            {name: "Milián Palencia", max: 4},
+            {name: "Milián Catalán", max: 5},
+            {name: "Milián Tello", max: 4},
+            {name: "Santos Milián", max: 2},
+            {name: "Samól Tello", max: 3},
+            {name: "Salaz Tello", max: 3},
+            {name: "Bonilla Tello", max: 5},
+            {name: "Molina Tello", max: 4},
+            {name: "Marina e Hija", max: 2},
+            {name: "Lilo Ortiz y Fam.", max: 4},
+            {name: "Belsi Ortiz y Fam.", max: 3},
+            {name: "César Ortiz Milián y esposa", max: 2},
+            {name: "Pedro Ortiz y Fam.", max: 4},
+            {name: "Gregorio Milián y Fam.", max: 4},
+            {name: "Fila Milián y Nieta", max: 2},
+            {name: "Aura Ortiz y Fam.", max: 3},
+            {name: "Fidel Milián Cordóva y Fam.", max: 3},
+            {name: "Vidal Milián y Fam.", max: 4},
+            {name: "María Córdova", max: 1},
+            {name: "Sian Córdova", max: 5},
+            {name: "César Galvéz Córdova e Hija", max: 2},
+            {name: "Claudia Galvéz Córdova, Esposo e Hijo", max: 3},
+            {name: "Martina Córdova y Esposo", max: 2},
+            {name: "Galvéz Arrivillaga", max: 4},
+            {name: "Nidia Castillo e Hijo", max: 2},
+            {name: "Esteban Médoza", max: 4},
+            {name: "Pastor Xar y Esposa", max: 2},
+            {name: "Bayron Yantuche y Fam.", max: 4},
+            {name: "Eliseo Péres y Fam.", max: 5},
+            {name: "Miguel Solis y Fam.", max: 5},
+            {name: "Soila Hernández y Fam.", max: 3},
+            {name: "Magali Hernández y Fam.", max: 3},
+            {name: "Andrea Hernández y Fam.", max: 4},
+            {name: "Ruth Gónzales", max: 1},
+            {name: "Celia Garcia y Esposo", max: 2},
+            {name: "Armindo Garcia y Esposa", max: 2},
+            {name: "Silvia Líquez", max: 3},
+            {name: "Joselyn de Milián", max: 1},
+            {name: "Jorge Ortiz", max: 1},
+            {name: "Eunice de Milián", max: 2},
+            {name: "Loidy de Ortiz e Hija", max: 1},
+            {name: "Licenciada Cynthia Rodriguez", max: 1},
+            {name: "Joshua Guevara", max: 1},
+            {name: "Samantha López", max: 1},
+            {name: "Daniela Higueros", max: 1},
+            {name: "Freddy Molina", max: 2},
+            {name: "Antoan Ruiz", max: 1},
+            {name: "Kevin Poqom", max: 1},
+            {name: "Alexander Chanquín", max: 1},
+            {name: "Karen García", max: 3},
+            {name: "Jaime Ortiz, Esposa e Hija", max: 1},
+            {name: "Danilo Ordoñes Córdova", max: 1},
+            {name: "Wilder Ordoñes Córdova", max: 1},
+            {name: "Grupo Norteño Getsemani", max: 10}
+        ];
+
+        // Cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', function() {
+            const familySelect = document.getElementById('familySelect');
+            const confirmationForm = document.getElementById('confirmacionForm');
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            const messageText = document.getElementById('messageText');
+
+            // Llenar el select con las familias
+            function populateFamilySelect() {
+                familySelect.innerHTML = '';
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = "Selecciona tu familia";
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                familySelect.appendChild(defaultOption);
+                
+                familyData.forEach(family => {
+                    const option = document.createElement('option');
+                    option.value = family.name;
+                    option.textContent = `${family.name} (Máx. ${family.max} invitados)`;
+                    familySelect.appendChild(option);
+                });
             }
-            
-            // Ocultar después de 3 segundos
-            setTimeout(() => {
-                guestsInfo.style.display = 'none';
-            }, 3000);
+
+            // Mostrar mensaje de confirmación/error
+            function showMessage(text, isSuccess) {
+                messageText.textContent = text;
+                confirmationMessage.className = isSuccess ? 'success' : 'error';
+                confirmationMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    confirmationMessage.style.display = 'none';
+                }, 5000);
+            }
+
+            // Manejar envío del formulario
+            confirmationForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const submitBtn = this.querySelector('.submit-btn');
+                const originalText = submitBtn.innerHTML;
+                
+                // Mostrar estado de carga
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Enviar con EmailJS
+                    await emailjs.sendForm(
+                        'service_q7q71oq', // Tu Service ID
+                        'template_lcj61mv', // Reemplaza con tu Template ID
+                        this
+                    );
+                    
+                    showMessage('¡Confirmación exitosa! Gracias por confirmar tu asistencia.', true);
+                    confirmationForm.reset();
+                } catch (error) {
+                    console.error('Error al enviar:', error);
+                    showMessage('Error al enviar. Por favor intenta nuevamente.', false);
+                } finally {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+
+            // Inicializar
+            populateFamilySelect();
         });
 
         // Funciones para abrir aplicaciones de navegación
         function abrirWaze() {
-            // Coordenadas del salón de eventos
             const lat = 14.611486;
             const lng = -90.659849;
             
-            // Intentar abrir la app de Waze
             window.location.href = `waze://?ll=${lat},${lng}&navigate=yes`;
             
-            // Si no tiene Waze instalado, redirigir a la página web
             setTimeout(function() {
                 window.location.href = `https://www.waze.com/ul?ll=${lat},${lng}&navigate=yes`;
             }, 500);
         }
 
         function abrirGoogleMaps() {
-            // Coordenadas del salón de eventos
             const lat = 14.611486;
             const lng = -90.659849;
             
-            // Intentar abrir la app de Google Maps
             window.location.href = `comgooglemaps://?daddr=${lat},${lng}&directionsmode=driving`;
             
-            // Si no tiene Google Maps instalado, redirigir a la página web
+            
             setTimeout(function() {
                 window.location.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
             }, 500);
         }
 
-        // Enviar formulario a WhatsApp
-        document.getElementById('confirmacionForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const family = document.getElementById('familySelect').value;
-            const maxGuests = document.getElementById('maxGuests').textContent;
-            
-            // Número de teléfono (reemplaza con tu número)
-            const phoneNumber = "50237453485";
-            
-            // Crear mensaje para WhatsApp
-            const whatsappMessage = `*Confirmación de Asistencia a XV Años*\n\n` +
-                                   `*Familia:* ${family}\n` +
-                                   `*Número Máximo de Invitados:* ${maxGuests}\n` +
-                                   `*Confirmo mi asistencia*`;
-            
-            // Codificar el mensaje para URL
-            const encodedMessage = encodeURIComponent(whatsappMessage);
-            
-            // Abrir WhatsApp con el mensaje
-            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
-            
-            // Resetear formulario
-            this.reset();
-        });
-
-        // Inicializar
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-        });
+        // Inicializar contador
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
