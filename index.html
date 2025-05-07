@@ -729,7 +729,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
         // Inicializa EmailJS con tu User ID público
-        emailjs.init('service_q7q71oq","template_lcj61mv'); // Reemplaza con tu User ID real
+        emailjs.init('xPjRFd8bzVbjvv38R'); // Reemplaza con tu User ID real
     </script>
 </head>
 <body>
@@ -836,10 +836,19 @@
             <h2>Confirmar Asistencia</h2>
             <form id="confirmacionForm">
                 <div class="form-group">
-                    <select class="family-select" name="familia" id="familySelect" required>
+                    <select class="family-select" name="familia" id="familySelect" required onchange="actualizarInvitados()">
                         <option value="" disabled selected>Selecciona tu familia</option>
                         <!-- Las opciones se llenarán con JavaScript -->
                     </select>
+                </div>
+                
+                <div class="form-group" id="invitadosContainer" style="display: none;">
+                    <label for="numInvitados" style="display: block; margin-bottom: 10px; color: var(--rosa-oscuro);">
+                        Número de invitados que asistirán (Máximo: <span id="maxInvitados">0</span>)
+                    </label>
+                    <input type="number" id="numInvitados" name="numInvitados" min="1" value="1" 
+                           style="width: 100%; padding: 15px; border: 2px solid var(--rosa-medio); border-radius: 10px;"
+                           required>
                 </div>
                 
                 <button type="submit" class="submit-btn">CONFIRMAR ASISTENCIA</button>
@@ -891,92 +900,113 @@
 
         // Datos completos de familias
         const familyData = [
-            {name: "Milián Cordóva/abuelos", max: 2},
-            {name: "Milián Palencia", max: 4},
-            {name: "Milián Catalán", max: 5},
-            {name: "Milián Tello", max: 4},
-            {name: "Santos Milián", max: 2},
-            {name: "Samól Tello", max: 3},
-            {name: "Salaz Tello", max: 3},
-            {name: "Bonilla Tello", max: 5},
-            {name: "Molina Tello", max: 4},
-            {name: "Marina e Hija", max: 2},
-            {name: "Lilo Ortiz y Fam.", max: 4},
-            {name: "Belsi Ortiz y Fam.", max: 3},
-            {name: "César Ortiz Milián y esposa", max: 2},
-            {name: "Pedro Ortiz y Fam.", max: 4},
-            {name: "Gregorio Milián y Fam.", max: 4},
-            {name: "Fila Milián y Nieta", max: 2},
-            {name: "Aura Ortiz y Fam.", max: 3},
-            {name: "Fidel Milián Cordóva y Fam.", max: 3},
-            {name: "Vidal Milián y Fam.", max: 4},
-            {name: "María Córdova", max: 1},
-            {name: "Sian Córdova", max: 5},
-            {name: "César Galvéz Córdova e Hija", max: 2},
-            {name: "Claudia Galvéz Córdova, Esposo e Hijo", max: 3},
-            {name: "Martina Córdova y Esposo", max: 2},
-            {name: "Galvéz Arrivillaga", max: 4},
-            {name: "Nidia Castillo e Hijo", max: 2},
-            {name: "Esteban Médoza", max: 4},
-            {name: "Pastor Xar y Esposa", max: 2},
-            {name: "Bayron Yantuche y Fam.", max: 4},
-            {name: "Eliseo Péres y Fam.", max: 5},
-            {name: "Miguel Solis y Fam.", max: 5},
-            {name: "Soila Hernández y Fam.", max: 3},
-            {name: "Magali Hernández y Fam.", max: 3},
-            {name: "Andrea Hernández y Fam.", max: 4},
-            {name: "Ruth Gónzales", max: 1},
-            {name: "Celia Garcia y Esposo", max: 2},
-            {name: "Armindo Garcia y Esposa", max: 2},
-            {name: "Silvia Líquez", max: 3},
-            {name: "Joselyn de Milián", max: 1},
-            {name: "Jorge Ortiz", max: 1},
-            {name: "Eunice de Milián", max: 2},
-            {name: "Loidy de Ortiz e Hija", max: 1},
-            {name: "Licenciada Cynthia Rodriguez", max: 1},
-            {name: "Joshua Guevara", max: 1},
-            {name: "Samantha López", max: 1},
-            {name: "Daniela Higueros", max: 1},
-            {name: "Freddy Molina", max: 2},
-            {name: "Antoan Ruiz", max: 1},
-            {name: "Kevin Poqom", max: 1},
-            {name: "Alexander Chanquín", max: 1},
-            {name: "Karen García", max: 3},
-            {name: "Jaime Ortiz, Esposa e Hija", max: 1},
-            {name: "Danilo Ordoñes Córdova", max: 1},
-            {name: "Wilder Ordoñes Córdova", max: 1},
-            {name: "Grupo Norteño Getsemani", max: 10}
+            {name: "Milián Cordóva/abuelos", max: 2, confirmados: 0},
+            {name: "Milián Palencia", max: 4, confirmados: 0},
+            {name: "Milián Catalán", max: 5, confirmados: 0},
+            {name: "Milián Tello", max: 4, confirmados: 0},
+            {name: "Santos Milián", max: 2, confirmados: 0},
+            {name: "Samól Tello", max: 3, confirmados: 0},
+            {name: "Salaz Tello", max: 3, confirmados: 0},
+            {name: "Bonilla Tello", max: 5, confirmados: 0},
+            {name: "Molina Tello", max: 4, confirmados: 0},
+            {name: "Marina e Hija", max: 2, confirmados: 0},
+            {name: "Lilo Ortiz y Fam.", max: 4, confirmados: 0},
+            {name: "Belsi Ortiz y Fam.", max: 3, confirmados: 0},
+            {name: "César Ortiz Milián y esposa", max: 2, confirmados: 0},
+            {name: "Pedro Ortiz y Fam.", max: 4, confirmados: 0},
+            {name: "Gregorio Milián y Fam.", max: 4, confirmados: 0},
+            {name: "Fila Milián y Nieta", max: 2, confirmados: 0},
+            {name: "Aura Ortiz y Fam.", max: 3, confirmados: 0},
+            {name: "Fidel Milián Cordóva y Fam.", max: 3, confirmados: 0},
+            {name: "Vidal Milián y Fam.", max: 4, confirmados: 0},
+            {name: "María Córdova", max: 1, confirmados: 0},
+            {name: "Sian Córdova", max: 5, confirmados: 0},
+            {name: "César Galvéz Córdova e Hija", max: 2, confirmados: 0},
+            {name: "Claudia Galvéz Córdova, Esposo e Hijo", max: 3, confirmados: 0},
+            {name: "Martina Córdova y Esposo", max: 2, confirmados: 0},
+            {name: "Galvéz Arrivillaga", max: 4, confirmados: 0},
+            {name: "Nidia Castillo e Hijo", max: 2, confirmados: 0},
+            {name: "Esteban Médoza", max: 4, confirmados: 0},
+            {name: "Pastor Xar y Esposa", max: 2, confirmados: 0},
+            {name: "Bayron Yantuche y Fam.", max: 4, confirmados: 0},
+            {name: "Eliseo Péres y Fam.", max: 5, confirmados: 0},
+            {name: "Miguel Solis y Fam.", max: 5, confirmados: 0},
+            {name: "Soila Hernández y Fam.", max: 3, confirmados: 0},
+            {name: "Magali Hernández y Fam.", max: 3, confirmados: 0},
+            {name: "Andrea Hernández y Fam.", max: 4, confirmados: 0},
+            {name: "Ruth Gónzales", max: 1, confirmados: 0},
+            {name: "Celia Garcia y Esposo", max: 2, confirmados: 0},
+            {name: "Armindo Garcia y Esposa", max: 2, confirmados: 0},
+            {name: "Silvia Líquez", max: 3, confirmados: 0},
+            {name: "Joselyn de Milián", max: 1, confirmados: 0},
+            {name: "Jorge Ortiz", max: 1, confirmados: 0},
+            {name: "Eunice de Milián", max: 2, confirmados: 0},
+            {name: "Loidy de Ortiz e Hija", max: 1, confirmados: 0},
+            {name: "Licenciada Cynthia Rodriguez", max: 1, confirmados: 0},
+            {name: "Joshua Guevara", max: 1, confirmados: 0},
+            {name: "Samantha López", max: 1, confirmados: 0},
+            {name: "Daniela Higueros", max: 1, confirmados: 0},
+            {name: "Freddy Molina", max: 2, confirmados: 0},
+            {name: "Antoan Ruiz", max: 1, confirmados: 0},
+            {name: "Kevin Poqom", max: 1, confirmados: 0},
+            {name: "Alexander Chanquín", max: 1, confirmados: 0},
+            {name: "Karen García", max: 3, confirmados: 0},
+            {name: "Jaime Ortiz, Esposa e Hija", max: 1, confirmados: 0},
+            {name: "Danilo Ordoñes Córdova", max: 1, confirmados: 0},
+            {name: "Wilder Ordoñes Córdova", max: 1, confirmados: 0},
+            {name: "Grupo Norteño Getsemani", max: 10, confirmados: 0}
         ];
 
         // Cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
             const familySelect = document.getElementById('familySelect');
+            const invitadosContainer = document.getElementById('invitadosContainer');
+            const maxInvitadosSpan = document.getElementById('maxInvitados');
+            const numInvitadosInput = document.getElementById('numInvitados');
             const confirmationForm = document.getElementById('confirmacionForm');
             const confirmationMessage = document.getElementById('confirmationMessage');
             const messageText = document.getElementById('messageText');
 
-            // Llenar el select con las familias
+            // Llenar el select con las familias disponibles
             function populateFamilySelect() {
-            const familySelect = document.getElementById('familySelect');
-            familySelect.innerHTML = '';
-            
-            const defaultOption = document.createElement('option');
-            defaultOption.value = "";
-            defaultOption.textContent = "Selecciona tu familia";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            familySelect.appendChild(defaultOption);
-            
-            // Ordenar familias alfabéticamente
-            familyData.sort((a, b) => a.name.localeCompare(b.name));
-            
-            familyData.forEach(family => {
-                const option = document.createElement('option');
-                option.value = family.name;
-                option.textContent = family.name;
-                familySelect.appendChild(option);
-            });
-        }
+                familySelect.innerHTML = '';
+                
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = "Selecciona tu familia";
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                familySelect.appendChild(defaultOption);
+                
+                // Filtrar solo familias que no han alcanzado su máximo
+                const familiasDisponibles = familyData.filter(f => f.confirmados < f.max);
+                
+                // Ordenar alfabéticamente
+                familiasDisponibles.sort((a, b) => a.name.localeCompare(b.name));
+                
+                familiasDisponibles.forEach(family => {
+                    const option = document.createElement('option');
+                    option.value = family.name;
+                    option.textContent = `${family.name} (${family.max - family.confirmados} Invitado(s) )`;
+                    option.setAttribute('data-max', family.max - family.confirmados);
+                    familySelect.appendChild(option);
+                });
+            }
+
+            // Actualizar campo de número de invitados
+            function actualizarInvitados() {
+                const selectedOption = familySelect.options[familySelect.selectedIndex];
+                
+                if (selectedOption.value) {
+                    const maxDisponible = parseInt(selectedOption.getAttribute('data-max'));
+                    maxInvitadosSpan.textContent = maxDisponible;
+                    numInvitadosInput.max = maxDisponible;
+                    numInvitadosInput.value = Math.min(1, maxDisponible);
+                    invitadosContainer.style.display = 'block';
+                } else {
+                    invitadosContainer.style.display = 'none';
+                }
+            }
 
             // Mostrar mensaje de confirmación/error
             function showMessage(text, isSuccess) {
@@ -995,21 +1025,39 @@
                 
                 const submitBtn = this.querySelector('.submit-btn');
                 const originalText = submitBtn.innerHTML;
+                const familiaNombre = familySelect.value;
+                const numInvitados = parseInt(numInvitadosInput.value);
                 
                 // Mostrar estado de carga
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
                 submitBtn.disabled = true;
                 
                 try {
-                    // Enviar con EmailJS
-                    await emailjs.sendForm(
+                    // Actualizar datos localmente
+                    const familiaIndex = familyData.findIndex(f => f.name === familiaNombre);
+                    if (familiaIndex !== -1) {
+                        familyData[familiaIndex].confirmados += numInvitados;
+                    }
+                    
+                    // Enviar con EmailJS (incluyendo número de invitados)
+                    await emailjs.send(
                         'service_q7q71oq', // Tu Service ID
-                        'template_lcj61mv', // Reemplaza con tu Template ID
-                        this
+                        'template_lcj61mv', // Tu Template ID
+                        {
+                            familia: familiaNombre,
+                            invitados: numInvitados,
+                            fecha: new Date().toLocaleString(),
+                            disponibles: familyData[familiaIndex].max - familyData[familiaIndex].confirmados
+                        }
                     );
                     
-                    showMessage('¡Confirmación exitosa! Gracias por confirmar tu asistencia.', true);
+                    showMessage(`¡Confirmación exitosa! ${numInvitados} invitados de ${familiaNombre} asistirán.`, true);
+                    
+                    // Actualizar lista de familias disponibles
+                    populateFamilySelect();
+                    invitadosContainer.style.display = 'none';
                     confirmationForm.reset();
+                    
                 } catch (error) {
                     console.error('Error al enviar:', error);
                     showMessage('Error al enviar. Por favor intenta nuevamente.', false);
