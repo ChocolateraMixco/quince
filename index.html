@@ -893,7 +893,7 @@
         }
 
         // Datos completos de familias
-        const familyData = [
+        let familyData = JSON.parse(localStorage.getItem('familyData')) || [
             {name: "Milián Cordóva/abuelos", max: 2, confirmados: 0},
             {name: "Milián Palencia", max: 4, confirmados: 0},
             {name: "Milián Catalán", max: 5, confirmados: 0},
@@ -951,6 +951,11 @@
             {name: "Grupo Norteño Getsemani", max: 10, confirmados: 0}
         ];
 
+        // Función para actualizar el localStorage
+            function updateStorage() {
+                localStorage.setItem('familyData', JSON.stringify(familyData));
+            }
+
         // Cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
             const familySelect = document.getElementById('familySelect');
@@ -977,17 +982,17 @@
 
             // Llenar el select con las familias disponibles
             function populateFamilySelect() {
-                familySelect.innerHTML = '';
-                
-                const defaultOption = document.createElement('option');
-                defaultOption.value = "";
-                defaultOption.textContent = "Selecciona tu familia";
-                defaultOption.disabled = true;
-                defaultOption.selected = true;
-                familySelect.appendChild(defaultOption);
-                
-                // Filtrar solo familias que no han confirmado aún
-                const familiasDisponibles = familyData.filter(f => f.confirmados === 0);
+            familySelect.innerHTML = '';
+            
+            const defaultOption = document.createElement('option');
+            defaultOption.value = "";
+            defaultOption.textContent = "Selecciona tu familia";
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            familySelect.appendChild(defaultOption);
+            
+            // Filtrar usando datos persistentes
+            const familiasDisponibles = familyData.filter(f => f.confirmados === 0);
                 
                 // Ordenar alfabéticamente
                 familiasDisponibles.sort((a, b) => a.name.localeCompare(b.name));
@@ -1044,13 +1049,13 @@
                 submitBtn.disabled = true;
                 
                 try {
-                    // Actualizar datos localmente
+                    // Actualizar datos
                     const familiaIndex = familyData.findIndex(f => f.name === familiaNombre);
                     if (familiaIndex !== -1) {
-                        // Marcar como confirmado (1 persona)
                         familyData[familiaIndex].confirmados = 1;
+                        updateStorage(); // Actualizar localStorage
                     }
-                    
+                                
                     // Enviar con EmailJS
                     await emailjs.send(
                         'service_q7q71oq', // Tu Service ID
@@ -1088,6 +1093,11 @@
             // Inicializar
             populateFamilySelect();
         });
+
+        // Al cargar la página por primera vez
+        if (!localStorage.getItem('familyData')) {
+            updateStorage(); // Guardar datos iniciales
+        }
 
 
         // Funciones para abrir aplicaciones de navegación
