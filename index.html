@@ -836,19 +836,13 @@
             <h2>Confirmar Asistencia</h2>
             <form id="confirmacionForm">
                 <div class="form-group">
-                    <select class="family-select" name="familia" id="familySelect" required onchange="actualizarInvitados()">
+                    <select class="family-select" name="familia" id="familySelect" required onchange="mostrarMaxInvitados()">
                         <option value="" disabled selected>Selecciona tu familia</option>
                         <!-- Las opciones se llenarán con JavaScript -->
                     </select>
-                </div>
-                
-                <div class="form-group" id="invitadosContainer" style="display: none;">
-                    <label for="numInvitados" style="display: block; margin-bottom: 10px; color: var(--rosa-oscuro);">
-                        Número de invitados que asistirán (Máximo: <span id="maxInvitados">0</span>)
-                    </label>
-                    <input type="number" id="numInvitados" name="numInvitados" min="1" value="1" 
-                           style="width: 100%; padding: 15px; border: 2px solid var(--rosa-medio); border-radius: 10px;"
-                           required>
+                    <div id="maxInvitadosInfo" style="margin-top: 10px; font-style: italic; color: var(--dorado-oscuro); display: none;">
+                        Número de invitados máximo para esta familia: <span id="maxInvitadosSpan">0</span>
+                    </div>
                 </div>
                 
                 <button type="submit" class="submit-btn">CONFIRMAR ASISTENCIA</button>
@@ -960,12 +954,26 @@
         // Cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', function() {
             const familySelect = document.getElementById('familySelect');
-            const invitadosContainer = document.getElementById('invitadosContainer');
-            const maxInvitadosSpan = document.getElementById('maxInvitados');
-            const numInvitadosInput = document.getElementById('numInvitados');
+            const maxInvitadosInfo = document.getElementById('maxInvitadosInfo');
+            const maxInvitadosSpan = document.getElementById('maxInvitadosSpan');
             const confirmationForm = document.getElementById('confirmacionForm');
             const confirmationMessage = document.getElementById('confirmationMessage');
             const messageText = document.getElementById('messageText');
+
+            // Función para mostrar el máximo de invitados
+            window.mostrarMaxInvitados = function() {
+                const selectedOption = familySelect.options[familySelect.selectedIndex];
+                
+                if (selectedOption.value) {
+                    const familia = familyData.find(f => f.name === selectedOption.value);
+                    if (familia) {
+                        maxInvitadosSpan.textContent = familia.max;
+                        maxInvitadosInfo.style.display = 'block';
+                    }
+                } else {
+                    maxInvitadosInfo.style.display = 'none';
+                }
+            };
 
             // Llenar el select con las familias disponibles
             function populateFamilySelect() {
@@ -978,8 +986,8 @@
                 defaultOption.selected = true;
                 familySelect.appendChild(defaultOption);
                 
-                // Filtrar solo familias que no han alcanzado su máximo
-                const familiasDisponibles = familyData.filter(f => f.confirmados < f.max);
+                // Filtrar solo familias que no han confirmado aún
+                const familiasDisponibles = familyData.filter(f => f.confirmados === 0);
                 
                 // Ordenar alfabéticamente
                 familiasDisponibles.sort((a, b) => a.name.localeCompare(b.name));
@@ -987,24 +995,18 @@
                 familiasDisponibles.forEach(family => {
                     const option = document.createElement('option');
                     option.value = family.name;
-                    option.textContent = `${family.name} (${family.max - family.confirmados} Invitado(s) )`;
-                    option.setAttribute('data-max', family.max - family.confirmados);
+                    option.textContent = `${family.name} (Máx: ${family.max})`;
+                    option.setAttribute('data-max', family.max);
                     familySelect.appendChild(option);
                 });
-            }
 
-            // Actualizar campo de número de invitados
-            function actualizarInvitados() {
-                const selectedOption = familySelect.options[familySelect.selectedIndex];
-                
-                if (selectedOption.value) {
-                    const maxDisponible = parseInt(selectedOption.getAttribute('data-max'));
-                    maxInvitadosSpan.textContent = maxDisponible;
-                    numInvitadosInput.max = maxDisponible;
-                    numInvitadosInput.value = Math.min(1, maxDisponible);
-                    invitadosContainer.style.display = 'block';
-                } else {
-                    invitadosContainer.style.display = 'none';
+                // Si no hay familias disponibles
+                if (familiasDisponibles.length === 0) {
+                    const option = document.createElement('option');
+                    option.value = "";
+                    option.textContent = "Todas las familias han confirmado";
+                    option.disabled = true;
+                    familySelect.appendChild(option);
                 }
             }
 
@@ -1013,6 +1015,10 @@
                 messageText.textContent = text;
                 confirmationMessage.className = isSuccess ? 'success' : 'error';
                 confirmationMessage.style.display = 'block';
+                
+                // Cambiar el ícono según éxito/error
+                const icon = confirmationMessage.querySelector('i');
+                icon.className = isSuccess ? 'fas fa-check-circle' : 'fas fa-times-circle';
                 
                 setTimeout(() => {
                     confirmationMessage.style.display = 'none';
@@ -1026,7 +1032,12 @@
                 const submitBtn = this.querySelector('.submit-btn');
                 const originalText = submitBtn.innerHTML;
                 const familiaNombre = familySelect.value;
-                const numInvitados = parseInt(numInvitadosInput.value);
+                
+                // Validar selección
+                if (!familiaNombre) {
+                    showMessage('Por favor selecciona una familia', false);
+                    return;
+                }
                 
                 // Mostrar estado de carga
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
@@ -1036,31 +1047,38 @@
                     // Actualizar datos localmente
                     const familiaIndex = familyData.findIndex(f => f.name === familiaNombre);
                     if (familiaIndex !== -1) {
-                        familyData[familiaIndex].confirmados += numInvitados;
+                        // Marcar como confirmado (1 persona)
+                        familyData[familiaIndex].confirmados = 1;
                     }
                     
-                    // Enviar con EmailJS (incluyendo número de invitados)
+                    // Enviar con EmailJS
                     await emailjs.send(
                         'service_q7q71oq', // Tu Service ID
                         'template_lcj61mv', // Tu Template ID
                         {
                             familia: familiaNombre,
-                            invitados: numInvitados,
-                            fecha: new Date().toLocaleString(),
-                            disponibles: familyData[familiaIndex].max - familyData[familiaIndex].confirmados
+                            invitados: 1, // Siempre será 1
+                            max_invitados: familyData[familiaIndex].max, // Enviamos el máximo como referencia
+                            fecha: new Date().toLocaleString()
                         }
                     );
                     
-                    showMessage(`¡Confirmación exitosa! ${numInvitados} invitados de ${familiaNombre} asistirán.`, true);
+                    showMessage(`¡Confirmación exitosa! La familia ${familiaNombre} ha confirmado asistencia.`, true);
                     
                     // Actualizar lista de familias disponibles
                     populateFamilySelect();
-                    invitadosContainer.style.display = 'none';
+                    maxInvitadosInfo.style.display = 'none';
                     confirmationForm.reset();
                     
                 } catch (error) {
                     console.error('Error al enviar:', error);
                     showMessage('Error al enviar. Por favor intenta nuevamente.', false);
+                    
+                    // Revertir confirmación si hubo error
+                    const familiaIndex = familyData.findIndex(f => f.name === familiaNombre);
+                    if (familiaIndex !== -1) {
+                        familyData[familiaIndex].confirmados = 0;
+                    }
                 } finally {
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
@@ -1070,6 +1088,7 @@
             // Inicializar
             populateFamilySelect();
         });
+
 
         // Funciones para abrir aplicaciones de navegación
         function abrirWaze() {
@@ -1088,7 +1107,6 @@
             const lng = -90.659849;
             
             window.location.href = `comgooglemaps://?daddr=${lat},${lng}&directionsmode=driving`;
-            
             
             setTimeout(function() {
                 window.location.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
