@@ -867,265 +867,226 @@
         </footer>
     </div>
 
-    <script>
-        // Pantalla de carga
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                document.getElementById('loader').classList.add('hidden');
-            }, 2000);
-        });
+   <script>
+// Configuración de Airtabl // Configuración CORREGIDA
+const AIRTABLE_API_KEY = 'patszOtaLLBOIB2iy.fcdccf5463cb76a181754391da4d26cafc836dce529a70a9c8f5b43902b259d4';
+const AIRTABLE_BASE_ID = 'appo75clELESOzLcK'; // Solo el ID de la base (no "tbl...")
+const AIRTABLE_TABLE_ID = 'tbl13D3tGeYKs0eig'; // ID de tu tabla
+const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE_ID}`;
 
-        // Cuenta regresiva
-        function updateCountdown() {
-            const targetDate = new Date('June 14, 2025 15:00:00').getTime();
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-            
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            
-            document.getElementById('days').textContent = days.toString().padStart(2, '0');
-            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
-        }
+// Pantalla de carga
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        document.getElementById('loader').classList.add('hidden');
+    }, 2000);
+});
 
-        // Datos completos de familias
-        let familyData = JSON.parse(localStorage.getItem('familyData')) || [
-            {name: "Milián Cordóva/abuelos", max: 2, confirmados: 0},
-            {name: "Milián Palencia", max: 4, confirmados: 0},
-            {name: "Milián Catalán", max: 5, confirmados: 0},
-            {name: "Milián Tello", max: 4, confirmados: 0},
-            {name: "Santos Milián", max: 2, confirmados: 0},
-            {name: "Samól Tello", max: 3, confirmados: 0},
-            {name: "Salaz Tello", max: 3, confirmados: 0},
-            {name: "Bonilla Tello", max: 5, confirmados: 0},
-            {name: "Molina Tello", max: 4, confirmados: 0},
-            {name: "Marina e Hija", max: 2, confirmados: 0},
-            {name: "Lilo Ortiz y Fam.", max: 4, confirmados: 0},
-            {name: "Belsi Ortiz y Fam.", max: 3, confirmados: 0},
-            {name: "César Ortiz Milián y esposa", max: 2, confirmados: 0},
-            {name: "Pedro Ortiz y Fam.", max: 4, confirmados: 0},
-            {name: "Gregorio Milián y Fam.", max: 4, confirmados: 0},
-            {name: "Fila Milián y Nieta", max: 2, confirmados: 0},
-            {name: "Aura Ortiz y Fam.", max: 3, confirmados: 0},
-            {name: "Fidel Milián Cordóva y Fam.", max: 3, confirmados: 0},
-            {name: "Vidal Milián y Fam.", max: 4, confirmados: 0},
-            {name: "María Córdova", max: 1, confirmados: 0},
-            {name: "Sian Córdova", max: 5, confirmados: 0},
-            {name: "César Galvéz Córdova e Hija", max: 2, confirmados: 0},
-            {name: "Claudia Galvéz Córdova, Esposo e Hijo", max: 3, confirmados: 0},
-            {name: "Martina Córdova y Esposo", max: 2, confirmados: 0},
-            {name: "Galvéz Arrivillaga", max: 4, confirmados: 0},
-            {name: "Nidia Castillo e Hijo", max: 2, confirmados: 0},
-            {name: "Esteban Médoza", max: 4, confirmados: 0},
-            {name: "Pastor Xar y Esposa", max: 2, confirmados: 0},
-            {name: "Bayron Yantuche y Fam.", max: 4, confirmados: 0},
-            {name: "Eliseo Péres y Fam.", max: 5, confirmados: 0},
-            {name: "Miguel Solis y Fam.", max: 5, confirmados: 0},
-            {name: "Soila Hernández y Fam.", max: 3, confirmados: 0},
-            {name: "Magali Hernández y Fam.", max: 3, confirmados: 0},
-            {name: "Andrea Hernández y Fam.", max: 4, confirmados: 0},
-            {name: "Ruth Gónzales", max: 1, confirmados: 0},
-            {name: "Celia Garcia y Esposo", max: 2, confirmados: 0},
-            {name: "Armindo Garcia y Esposa", max: 2, confirmados: 0},
-            {name: "Silvia Líquez", max: 3, confirmados: 0},
-            {name: "Joselyn de Milián", max: 1, confirmados: 0},
-            {name: "Jorge Ortiz", max: 1, confirmados: 0},
-            {name: "Eunice de Milián", max: 2, confirmados: 0},
-            {name: "Loidy de Ortiz e Hija", max: 1, confirmados: 0},
-            {name: "Licenciada Cynthia Rodriguez", max: 1, confirmados: 0},
-            {name: "Joshua Guevara", max: 1, confirmados: 0},
-            {name: "Samantha López", max: 1, confirmados: 0},
-            {name: "Daniela Higueros", max: 1, confirmados: 0},
-            {name: "Freddy Molina", max: 2, confirmados: 0},
-            {name: "Antoan Ruiz", max: 1, confirmados: 0},
-            {name: "Kevin Poqom", max: 1, confirmados: 0},
-            {name: "Alexander Chanquín", max: 1, confirmados: 0},
-            {name: "Karen García", max: 3, confirmados: 0},
-            {name: "Jaime Ortiz, Esposa e Hija", max: 1, confirmados: 0},
-            {name: "Danilo Ordoñes Córdova", max: 1, confirmados: 0},
-            {name: "Wilder Ordoñes Córdova", max: 1, confirmados: 0},
-            {name: "Grupo Norteño Getsemani", max: 10, confirmados: 0}
-        ];
+// Cuenta regresiva
+function updateCountdown() {
+    const targetDate = new Date('June 14, 2025 15:00:00').getTime();
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('days').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+}
 
-        // Función para actualizar el localStorage
-            function updateStorage() {
-                localStorage.setItem('familyData', JSON.stringify(familyData));
+// Función para cargar familias desde Airtable
+async function loadFamilies() {
+    try {
+        const response = await fetch(`${AIRTABLE_URL}?view=Disponibles`, {
+            headers: { 
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                'Content-Type': 'application/json'
             }
+        });
+        
+        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        
+        const data = await response.json();
+        console.log("Datos recibidos:", data); // Para depuración
+        
+        if (!data.records || data.records.length === 0) {
+            console.warn("No se encontraron registros");
+            return [];
+        }
+        
+        return data.records.map(record => ({
+            id: record.id,
+            name: record.fields?.Nombre || "Sin nombre",
+            max: record.fields?.MaxInvitados || 0
+        }));
+        
+    } catch (error) {
+        console.error("Error cargando familias:", error);
+        return [];
+    }
+}
 
-        // Cuando el DOM esté cargado
-        document.addEventListener('DOMContentLoaded', function() {
-            const familySelect = document.getElementById('familySelect');
-            const maxInvitadosInfo = document.getElementById('maxInvitadosInfo');
-            const maxInvitadosSpan = document.getElementById('maxInvitadosSpan');
-            const confirmationForm = document.getElementById('confirmacionForm');
-            const confirmationMessage = document.getElementById('confirmationMessage');
-            const messageText = document.getElementById('messageText');
+// Función para confirmar familia en Airtable
+async function confirmFamily(familyId, familyName) {
+    try {
+        // 1. Actualizar Airtable
+        const updateResponse = await fetch(`${AIRTABLE_URL}/${familyId}`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${AIRTABLE_API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                fields: { Confirmada: true }
+            })
+        });
+        
+        if (!updateResponse.ok) throw new Error("Error en Airtable");
+        
+        // 2. Enviar email de confirmación
+        await emailjs.send(
+            'service_q7q71oq',
+            'template_lcj61mv',
+            {
+                familia: familyName,
+                invitados: 1,
+                fecha: new Date().toLocaleString()
+            }
+        );
+        
+        return true;
+    } catch (error) {
+        console.error("Error confirmando:", error);
+        return false;
+    }
+}
 
-            // Función para mostrar el máximo de invitados
-            window.mostrarMaxInvitados = function() {
-                const selectedOption = familySelect.options[familySelect.selectedIndex];
-                
-                if (selectedOption.value) {
-                    const familia = familyData.find(f => f.name === selectedOption.value);
-                    if (familia) {
-                        maxInvitadosSpan.textContent = familia.max;
-                        maxInvitadosInfo.style.display = 'block';
-                    }
+// Cuando el DOM esté cargado
+document.addEventListener('DOMContentLoaded', async function() {
+    const familySelect = document.getElementById('familySelect');
+    const maxInvitadosInfo = document.getElementById('maxInvitadosInfo');
+    const maxInvitadosSpan = document.getElementById('maxInvitadosSpan');
+    const confirmationForm = document.getElementById('confirmacionForm');
+    const confirmationMessage = document.getElementById('confirmationMessage');
+    const messageText = document.getElementById('messageText');
+
+    // Cargar familias disponibles
+    const familias = await loadFamilies();
+    
+    // Llenar select
+    function populateSelect() {
+        familySelect.innerHTML = '';
+        
+        const defaultOption = document.createElement('option');
+        defaultOption.value = "";
+        defaultOption.textContent = "Selecciona tu familia";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        familySelect.appendChild(defaultOption);
+        
+        familias.forEach(family => {
+            const option = document.createElement('option');
+            option.value = family.id;
+            option.dataset.name = family.name;
+            option.dataset.max = family.max;
+            option.textContent = `${family.name} (Máx: ${family.max})`;
+            familySelect.appendChild(option);
+        });
+    }
+    
+    populateSelect();
+
+    // Mostrar máximo de invitados al seleccionar
+    familySelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        if (selectedOption.value) {
+            maxInvitadosSpan.textContent = selectedOption.dataset.max;
+            maxInvitadosInfo.style.display = 'block';
+        } else {
+            maxInvitadosInfo.style.display = 'none';
+        }
+    });
+
+    // Manejar envío del formulario
+    confirmationForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const familyId = familySelect.value;
+        const familyName = familySelect.options[familySelect.selectedIndex].dataset.name;
+        
+        if (!familyId) {
+            showMessage('Por favor selecciona una familia', false);
+            return;
+        }
+        
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        submitBtn.disabled = true;
+        
+        try {
+            const success = await confirmFamily(familyId, familyName);
+            if (success) {
+                showMessage(`¡Confirmación exitosa! ${familyName} ha confirmado.`, true);
+                // Recargar las familias disponibles
+                const nuevasFamilias = await loadFamilies();
+                if (nuevasFamilias.length > 0) {
+                    familias.splice(0, familias.length, ...nuevasFamilias);
+                    populateSelect();
                 } else {
-                    maxInvitadosInfo.style.display = 'none';
+                    familySelect.innerHTML = '<option value="" disabled>Todas las familias han confirmado</option>';
                 }
-            };
-
-            // Llenar el select con las familias disponibles
-            function populateFamilySelect() {
-            familySelect.innerHTML = '';
-            
-            const defaultOption = document.createElement('option');
-            defaultOption.value = "";
-            defaultOption.textContent = "Selecciona tu familia";
-            defaultOption.disabled = true;
-            defaultOption.selected = true;
-            familySelect.appendChild(defaultOption);
-            
-            // Filtrar usando datos persistentes
-            const familiasDisponibles = familyData.filter(f => f.confirmados === 0);
-                
-                // Ordenar alfabéticamente
-                familiasDisponibles.sort((a, b) => a.name.localeCompare(b.name));
-                
-                familiasDisponibles.forEach(family => {
-                    const option = document.createElement('option');
-                    option.value = family.name;
-                    option.textContent = `${family.name} (Máx: ${family.max})`;
-                    option.setAttribute('data-max', family.max);
-                    familySelect.appendChild(option);
-                });
-
-                // Si no hay familias disponibles
-                if (familiasDisponibles.length === 0) {
-                    const option = document.createElement('option');
-                    option.value = "";
-                    option.textContent = "Todas las familias han confirmado";
-                    option.disabled = true;
-                    familySelect.appendChild(option);
-                }
+                maxInvitadosInfo.style.display = 'none';
+            } else {
+                showMessage('Error al confirmar. Intenta nuevamente.', false);
             }
-
-            // Mostrar mensaje de confirmación/error
-            function showMessage(text, isSuccess) {
-                messageText.textContent = text;
-                confirmationMessage.className = isSuccess ? 'success' : 'error';
-                confirmationMessage.style.display = 'block';
-                
-                // Cambiar el ícono según éxito/error
-                const icon = confirmationMessage.querySelector('i');
-                icon.className = isSuccess ? 'fas fa-check-circle' : 'fas fa-times-circle';
-                
-                setTimeout(() => {
-                    confirmationMessage.style.display = 'none';
-                }, 5000);
-            }
-
-            // Manejar envío del formulario
-            confirmationForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const submitBtn = this.querySelector('.submit-btn');
-                const originalText = submitBtn.innerHTML;
-                const familiaNombre = familySelect.value;
-                
-                // Validar selección
-                if (!familiaNombre) {
-                    showMessage('Por favor selecciona una familia', false);
-                    return;
-                }
-                
-                // Mostrar estado de carga
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-                submitBtn.disabled = true;
-                
-                try {
-                    // Actualizar datos
-                    const familiaIndex = familyData.findIndex(f => f.name === familiaNombre);
-                    if (familiaIndex !== -1) {
-                        familyData[familiaIndex].confirmados = 1;
-                        updateStorage(); // Actualizar localStorage
-                    }
-                                
-                    // Enviar con EmailJS
-                    await emailjs.send(
-                        'service_q7q71oq', // Tu Service ID
-                        'template_lcj61mv', // Tu Template ID
-                        {
-                            familia: familiaNombre,
-                            invitados: 1, // Siempre será 1
-                            max_invitados: familyData[familiaIndex].max, // Enviamos el máximo como referencia
-                            fecha: new Date().toLocaleString()
-                        }
-                    );
-                    
-                    showMessage(`¡Confirmación exitosa! La familia ${familiaNombre} ha confirmado asistencia.`, true);
-                    
-                    // Actualizar lista de familias disponibles
-                    populateFamilySelect();
-                    maxInvitadosInfo.style.display = 'none';
-                    confirmationForm.reset();
-                    
-                } catch (error) {
-                    console.error('Error al enviar:', error);
-                    showMessage('Error al enviar. Por favor intenta nuevamente.', false);
-                    
-                    // Revertir confirmación si hubo error
-                    const familiaIndex = familyData.findIndex(f => f.name === familiaNombre);
-                    if (familiaIndex !== -1) {
-                        familyData[familiaIndex].confirmados = 0;
-                    }
-                } finally {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }
-            });
-
-            // Inicializar
-            populateFamilySelect();
-        });
-
-        // Al cargar la página por primera vez
-        if (!localStorage.getItem('familyData')) {
-            updateStorage(); // Guardar datos iniciales
+        } catch (error) {
+            console.error("Error:", error);
+            showMessage('Error al procesar la confirmación', false);
+        } finally {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
         }
+    });
 
+    // Mostrar mensajes
+    function showMessage(text, isSuccess) {
+        messageText.textContent = text;
+        confirmationMessage.className = isSuccess ? 'success' : 'error';
+        confirmationMessage.style.display = 'block';
+        confirmationMessage.querySelector('i').className = isSuccess ? 'fas fa-check-circle' : 'fas fa-times-circle';
+        
+        setTimeout(() => {
+            confirmationMessage.style.display = 'none';
+        }, 5000);
+    }
+});
 
-        // Funciones para abrir aplicaciones de navegación
-        function abrirWaze() {
-            const lat = 14.611486;
-            const lng = -90.659849;
-            
-            window.location.href = `waze://?ll=${lat},${lng}&navigate=yes`;
-            
-            setTimeout(function() {
-                window.location.href = `https://www.waze.com/ul?ll=${lat},${lng}&navigate=yes`;
-            }, 500);
-        }
+// Funciones para abrir aplicaciones de navegación
+function abrirWaze() {
+    const lat = 14.611486;
+    const lng = -90.659849;
+    window.location.href = `waze://?ll=${lat},${lng}&navigate=yes`;
+    setTimeout(() => window.location.href = `https://www.waze.com/ul?ll=${lat},${lng}&navigate=yes`, 500);
+}
 
-        function abrirGoogleMaps() {
-            const lat = 14.611486;
-            const lng = -90.659849;
-            
-            window.location.href = `comgooglemaps://?daddr=${lat},${lng}&directionsmode=driving`;
-            
-            setTimeout(function() {
-                window.location.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`;
-            }, 500);
-        }
+function abrirGoogleMaps() {
+    const lat = 14.611486;
+    const lng = -90.659849;
+    window.location.href = `comgooglemaps://?daddr=${lat},${lng}&directionsmode=driving`;
+    setTimeout(() => window.location.href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=driving`, 500);
+}
 
-        // Inicializar contador
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-    </script>
+// Inicializar contador
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// Inicializar EmailJS
+emailjs.init('xPjRFd8bzVbjvv38R');
+</script>
 </body>
 </html>
